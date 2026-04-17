@@ -8,4 +8,8 @@ class User(db.Model):
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
 
-    workouts = db.relationship("Workout", back_populates="user")
+    workouts = db.relationship(
+        "Workout", back_populates="user", cascade="all, delete-orphan")
+
+    def __repr__(self):
+        return f"<User {self.username}>"
