@@ -1,6 +1,7 @@
 import pytest
 from marshmallow import ValidationError
-from server.schemas import WorkoutSchema, UserSchema
+from server.schemas.user_schema import UserSchema
+from server.schemas.workout_schema import WorkoutSchema
 
 
 def test_valid_workout():
@@ -19,7 +20,12 @@ def test_invalid_duration():
 
 def test_user_with_workouts():
     schema = UserSchema()
-    data = {"username": "koech", "workouts": [
-        {"title": "Gym", "date": "2026-04-17", "duration": 90}]}
+    data = {
+        "username": "koech",
+        "workouts": [
+            {"title": "Gym", "date": "2026-04-17", "duration": 90}
+        ]
+    }
     result = schema.load(data)
     assert result["username"] == "koech"
+    assert result["workouts"][0]["title"] == "Gym"
