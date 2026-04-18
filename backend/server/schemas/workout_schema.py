@@ -23,8 +23,9 @@ class WorkoutSchema(Schema):
 
     notes = fields.Str(validate=validate.Length(max=500))
 
-    # Nested user (lazy reference, no direct import)
-    user = fields.Nested(lambda: UserSchema(exclude=("workouts",)))
+    # Nested user
+    user = fields.Nested(lambda: __import__('server.schemas.user_schema', fromlist=[
+                         'UserSchema']).UserSchema(exclude=("workouts",)))
 
     @validates_schema
     def validate_duration_logic(self, data, **kwargs):

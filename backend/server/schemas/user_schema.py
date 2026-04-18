@@ -10,10 +10,11 @@ class UserSchema(Schema):
         error_messages={"required": "Username is required."}
     )
 
-    # Nested workouts (lazy reference, no direct import)
+    # Nested workouts
     workouts = fields.List(
-        fields.Nested(lambda: WorkoutSchema(exclude=("user",)))
+        fields.Nested(lambda: __import__('server.schemas.workout_schema', fromlist=[
+                      'WorkoutSchema']).WorkoutSchema(exclude=("user",)))
     )
 
     class Meta:
-        unknown = "exclude"  # Ignore extra fields from input
+        unknown = "exclude"
